@@ -419,6 +419,8 @@ function! s:applymodifer(number,modifier,width)
         return printf('%'.a:width.'d',a:number)
     elseif a:modifier == '^'
         return toupper(a:number)
+    elseif a:modifier == ','
+        return tolower(a:number)
     else
         return printf('%0'.a:width.'s',a:number)
     endif
@@ -440,9 +442,9 @@ function! s:strftime(pattern,time)
     let remaining = a:pattern
     while remaining != ""
         if remaining =~ '^%'
-            let modifier = matchstr(remaining,'%\zs[-_0^]\=\ze.')
-            let specifier = matchstr(remaining,'%[-_0^]\=\zs.')
-            let remaining = matchstr(remaining,'%[-_0^]\=.\zs.*')
+            let modifier = matchstr(remaining,'%\zs[-_0^,]\=\ze.')
+            let specifier = matchstr(remaining,'%[-_0^,]\=\zs.')
+            let remaining = matchstr(remaining,'%[-_0^,]\=.\zs.*')
             if specifier == '%'
                 let expanded .= '%'
             elseif has_key(s:strftime_items,specifier)
@@ -654,7 +656,7 @@ function! s:timeregexp() dict
 endfunction
 
 function! s:createtimehandler(format)
-    let pattern = '^\%(%?\=\[.\{-\}\]\|%[-_0^]\=.\|[^%]*\)'
+    let pattern = '^\%(%?\=\[.\{-\}\]\|%[-_0^,]\=.\|[^%]*\)'
     let regexp = ['\%(\<\|-\@=\)']
     let reader = []
     let targets = [' ']
@@ -686,6 +688,8 @@ function! s:createtimehandler(format)
                 let pat = substitute(item[2],'\C\\\@<![[:lower:]]','\u&','g')
             elseif modifier == '0'
                 let pat = substitute(item[2],' \|-\@<!\\=','','g')
+            elseif modifier == ','
+                let pat = substitute(item[2],'\C\\\@<![[:alpha:]]','\l&','g')
             else
                 let pat = item[2]
             endif
@@ -760,6 +764,7 @@ function! s:adddate(master,count,bang)
             echo '%_x    %x with spaces rather than leading zeros'
             echo '%-x    %x with no leading spaces or zeros'
             echo '%^x    %x in uppercase'
+            echo '%,x    %x in lowercase'
             echo '%*     at beginning/end, surpress \</\> respectively'
             echo '%[..]  any one character         \([..]\)'
             echo '%?[..] up to one character       \([..]\=\)'
