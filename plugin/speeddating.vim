@@ -823,6 +823,19 @@ SpeedDatingFormat %Y %b %d                      " 'Last Change:' headers of
 SpeedDatingFormat %b %d, %Y                     " Vim runtime files
 SpeedDatingFormat %^v
 SpeedDatingFormat %v
+SpeedDatingFormat %o                            " 1st
+SpeedDatingFormat %A                            " Monday
+SpeedDatingFormat %a                            " Mon
+SpeedDatingFormat %B                            " January
+SpeedDatingFormat %b                            " Jan
+SpeedDatingFormat %^A                           " TUESDAY
+SpeedDatingFormat %^a                           " TUE
+SpeedDatingFormat %^B                           " FEBRUARY
+SpeedDatingFormat %^b                           " FEB
+SpeedDatingFormat %,A                           " wednesday
+SpeedDatingFormat %,a                           " wed
+SpeedDatingFormat %,B                           " march
+SpeedDatingFormat %,b                           " mar
 
 " }}}1
 " Maps {{{1
